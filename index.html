@@ -312,6 +312,76 @@
     border-color: #6a11cb;
     box-shadow: 0 0 6px rgba(106, 17, 203, .25);
 }
+/* ------------------------------------------
+   RESPONSIVE CHAT WIDGET FIXES
+--------------------------------------------*/
+
+/* Main container responsive for mobile */
+.n8n-chat-widget .chat-container {
+    width: 90vw;
+    max-width: 380px;
+    height: 600px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Mobile optimization 👇 */
+@media(max-width: 600px) {
+    .n8n-chat-widget .chat-container {
+        width: 100vw;
+        height: 90vh;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+    }
+
+    .n8n-chat-widget .chat-messages {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .n8n-chat-widget textarea {
+        font-size: 16px;  /* readable on phone */
+    }
+
+    .quick-card {
+        font-size: 15px;
+        padding: 10px;
+    }
+}
+
+/* 📌 Fix select dropdown overflow */
+#department-select-chat {
+    width: 100%;
+    padding: 12px !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #d1d1d1 !important;
+
+    /* Important for mobile dropdown */
+    position: relative;
+    z-index: 9999;
+    max-height: 48px;
+}
+
+/* Dropdown stays inside widget */
+.n8n-chat-widget select {
+    overflow-y: auto;
+}
+
+/* iOS / Chrome Android compatibility tweaks */
+select, textarea, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+    /* Safari iOS height fix */
+    #department-select-chat {
+        font-size: 16px !important;
+    }
+}
 
 </style>
 </head>
@@ -630,3 +700,4 @@ window.ChatWidgetConfig = {
 
 </body>
 </html>
+
