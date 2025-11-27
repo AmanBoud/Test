@@ -25,9 +25,12 @@
     right: 20px;
     z-index: 1000;
     display: none;
+
+    /* 🔥 Reduced size (normal widget size) */
     width: 90vw;
-    max-width: 380px;
-    height: 600px;
+    max-width: 340px; /* smaller width */
+    height: 480px;    /* smaller height */
+
     background: var(--chat-background-color);
     border-radius: 16px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
@@ -271,9 +274,11 @@
 
 @media screen and (max-height: 700px) {
     .n8n-chat-widget .chat-container {
-        height: 85vh;
+        height: 80vh;
     }
 }
+
+/* Quick Cards */
 .quick-card{
     background:#ffffff;
     border-radius:12px;
@@ -289,7 +294,7 @@
     box-shadow:0 4px 12px rgba(0,0,0,.18);
 }
 
-/* FIX Select Box Uneven Border */
+/* FIX Select Box */
 #department-select-chat {
     width: 100%;
     padding: 10px 12px !important;
@@ -306,81 +311,10 @@
     background-size: 12px;
 }
 
-/* Hover + Focus → Smooth and professional */
 #department-select-chat:hover,
 #department-select-chat:focus {
     border-color: #6a11cb;
     box-shadow: 0 0 6px rgba(106, 17, 203, .25);
-}
-/* ------------------------------------------
-   RESPONSIVE CHAT WIDGET FIXES
---------------------------------------------*/
-
-/* Main container responsive for mobile */
-.n8n-chat-widget .chat-container {
-    width: 90vw;
-    max-width: 380px;
-    height: 600px;
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-/* Mobile optimization 👇 */
-@media(max-width: 600px) {
-    .n8n-chat-widget .chat-container {
-        width: 100vw;
-        height: 90vh;
-        right: 0;
-        bottom: 0;
-        border-radius: 0;
-    }
-
-    .n8n-chat-widget .chat-messages {
-        padding: 10px;
-        font-size: 15px;
-    }
-
-    .n8n-chat-widget textarea {
-        font-size: 16px;  /* readable on phone */
-    }
-
-    .quick-card {
-        font-size: 15px;
-        padding: 10px;
-    }
-}
-
-/* 📌 Fix select dropdown overflow */
-#department-select-chat {
-    width: 100%;
-    padding: 12px !important;
-    border-radius: 10px !important;
-    border: 1.5px solid #d1d1d1 !important;
-
-    /* Important for mobile dropdown */
-    position: relative;
-    z-index: 9999;
-    max-height: 48px;
-}
-
-/* Dropdown stays inside widget */
-.n8n-chat-widget select {
-    overflow-y: auto;
-}
-
-/* iOS / Chrome Android compatibility tweaks */
-select, textarea, button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    outline: none;
-}
-
-@supports (-webkit-touch-callout: none) {
-    /* Safari iOS height fix */
-    #department-select-chat {
-        font-size: 16px !important;
-    }
 }
 
 </style>
@@ -520,7 +454,6 @@ window.ChatWidgetConfig = {
     </div>
 `;
 
-
         const timestamp = document.createElement("div");
         timestamp.style.fontSize = "11px";
         timestamp.style.color = "#777";
@@ -536,25 +469,26 @@ window.ChatWidgetConfig = {
         messagesContainer.appendChild(row);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-        /* Button + select actions */
+        /* Quick buttons */
         botBubble.querySelectorAll('.quick-card').forEach(card => {
-    card.addEventListener('click', function () {
-        sendMessage(this.getAttribute('data-action'));
-    });
-});
+            card.addEventListener('click', function () {
+                sendMessage(this.getAttribute('data-action'));
+            });
+        });
 
-
-        botBubble.querySelector('#department-select-chat').addEventListener('change', function() {
+        /* Department select */
+        botBubble.querySelector('#department-select-chat')
+        .addEventListener('change', function() {
             if(this.value !== "") {
                 sendMessage("Selected Department: " + this.value);
             }
         });
     }
 
-    /* SEND USER MESSAGE WITH TIMESTAMP ONLY */
+    /* SEND USER MESSAGE */
     function sendMessage(message) {
 
-        /* USER bubble with timestamp */
+        /* USER bubble */
         var userWrapper = document.createElement("div");
         userWrapper.style.display = "flex";
         userWrapper.style.flexDirection = "column";
@@ -605,7 +539,8 @@ window.ChatWidgetConfig = {
                 botTimestamp.style.fontSize = "11px";
                 botTimestamp.style.color = "#777";
                 botTimestamp.style.marginTop = "4px";
-                botTimestamp.textContent = new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+                botTimestamp.textContent =
+                    new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
 
                 wrapper.appendChild(bubble);
                 wrapper.appendChild(botTimestamp);
@@ -667,13 +602,10 @@ window.ChatWidgetConfig = {
             textarea.value = "";
             textarea.style.height = "44px";
             currentSessionId = generateUUID();
-            startNewConversation();   // <-- add this here!
-
+            startNewConversation();
         });
 
-    
-
-    /* Floating bubble text typing effect */
+    /* Bubble typing effect */
     var messages = ["Hi there 👋", "Need help❓", "Chat with us now 😊"];
     var msgIndex = 0, charIndex = 0, current = "";
 
@@ -700,4 +632,3 @@ window.ChatWidgetConfig = {
 
 </body>
 </html>
-
